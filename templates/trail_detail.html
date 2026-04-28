@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ trail.name }} - تفاصيل المسار{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ trail.name }} <small class="text-white-50">{{ trail.trail_number }}</small></h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th><i class="fas fa-map-marker-alt"></i> المكان:</th>
+                                <td>{{ trail.location }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-calendar"></i> التاريخ:</th>
+                                <td>{{ trail.date|date:"l d F Y" }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-route"></i> المسافة:</th>
+                                <td>{{ trail.distance }} كم</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-chart-line"></i> المستوى:</th>
+                                <td>
+                                    <span class="trail-level-{{ trail.level }} fs-5">
+                                        {{ trail.get_level_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th><i class="fas fa-clock"></i> التجمع:</th>
+                                <td>{{ trail.meeting_time|time:"H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-play"></i> الانطلاق:</th>
+                                <td>{{ trail.departure_time|time:"H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-hourglass-half"></i> الوقت المستغرق:</th>
+                                <td>{{ trail.duration_hours }} ساعة</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-users"></i> الفئة:</th>
+                                <td>{{ trail.get_audience_display }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-2">
+                    <i class="fas fa-child"></i> السن الأدنى: <strong>{{ trail.min_age }} سنة</strong>
+                </div>
+                
+                {% if trail.google_maps_url %}
+                <div class="mt-3">
+                    <a href="{{ trail.google_maps_url }}" target="_blank" class="btn btn-outline-info">
+                        <i class="fab fa-google"></i> عرض موقع التجمع على خرائط جوجل
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4><i class="fas fa-users"></i> المشاركون ({{ participants|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if participants %}
+                <div class="list-group">
+                    {% for p in participants %}
+                    <div class="list-group-item">
+                        <i class="fas fa-user-circle"></i> {{ p.name }}
+                        <small class="text-muted float-left">سجل في {{ p.registered_at|date:"Y-m-d H:i" }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted text-center">لا يوجد مشاركون حتى الآن</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h4><i class="fas fa-clipboard-list"></i> التسجيل</h4>
+            </div>
+            <div class="card-body">
+                {% if can_register %}
+                <p class="text-success">
+                    <i class="fas fa-check-circle"></i> التسجيل مفتوح لهذا المسار
+                </p>
+                <a href="{% url 'public_register' trail.id %}" class="btn btn-success btn-lg w-100">
+                    <i class="fas fa-pen-alt"></i> سجل الآن
+                </a>
+                {% else %}
+                <p class="text-danger">
+                    <i class="fas fa-ban"></i> عذراً، التسجيل مغلق لهذا المسار
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body text-center">
+                <h5>هل لديك استفسار؟</h5>
+                <p>تواصل مع فريق التنظيم</p>
+                <i class="fas fa-phone"></i> 05XXXXXXXX
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
