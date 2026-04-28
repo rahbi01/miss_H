@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}تسجيل في {{ trail.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0"><i class="fas fa-user-plus"></i> تسجيل في مسار {{ trail.name }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong><i class="fas fa-info-circle"></i> معلومات المسار:</strong>
+                    {{ trail.date|date:"Y-m-d" }} - {{ trail.location }} - {{ trail.distance }} كم
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">الاسم الكامل *</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">رقم الهاتف *</label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <div class="text-danger">{{ form.phone.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">ملاحظات</label>
+                        {{ form.notes }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-check"></i> تأكيد التسجيل
+                        </button>
+                        <a href="{% url 'trail_detail' trail.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> رجوع
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
