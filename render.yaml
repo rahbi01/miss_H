@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: hiking-tracker
+    env: python
+    buildCommand: "./setup.sh"
+    startCommand: "gunicorn hiking_tracker.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hiking-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+
+databases:
+  - name: hiking-db
+    plan: free
