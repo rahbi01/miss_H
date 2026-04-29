@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}استيراد مشاركين دفعة واحدة - {{ trail.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h3 class="mb-0"><i class="fas fa-upload"></i> استيراد مشاركين - {{ trail.name }}</h3>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="importTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button" role="tab">
+                            <i class="fas fa-file-alt"></i> استيراد من نص
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="excel-tab" data-bs-toggle="tab" data-bs-target="#excel" type="button" role="tab">
+                            <i class="fas fa-file-excel"></i> استيراد من Excel
+                        </button>
+                    </li>
+                </ul>
+                
+                <form method="post" enctype="multipart/form-data" class="mt-3">
+                    {% csrf_token %}
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="text" role="tabpanel">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> أدخل اسم واحد في كل سطر. سيتم إضافة المشاركين مع رقم هاتف فارغ.
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">أسماء المشاركين</label>
+                                {{ form.names_text }}
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="excel" role="tabpanel">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> ملف Excel يجب أن يحتوي على عمودين: 
+                                <strong>الاسم</strong> (عمود A) و<strong>رقم الهاتف</strong> (عمود B)
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">ملف Excel</label>
+                                {{ form.excel_file }}
+                                <small class="text-muted">الصيغ المدعومة: .xlsx, .xls</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                        <a href="{% url 'participant_list' trail.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> رجوع
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> استيراد
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
