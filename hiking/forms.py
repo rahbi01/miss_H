@@ -11,11 +11,11 @@ class TrailForm(forms.ModelForm):
     class Meta:
         model = Trail
         fields = [
-            'trail_number', 'name', 'location', 'date', 'distance', 'level',
+            'name', 'location', 'date', 'distance', 'level',
             'meeting_time', 'departure_time', 'duration_hours', 'audience',
             'min_age', 'meeting_location', 'google_maps_url', 'latitude',
             'longitude', 'status'
-        ]
+        ]  # تم إزالة trail_number من القائمة
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'meeting_time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
@@ -26,27 +26,8 @@ class TrailForm(forms.ModelForm):
             'google_maps_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://maps.google.com/...'}),
             'latitude': forms.NumberInput(attrs={'step': '0.0000001', 'class': 'form-control'}),
             'longitude': forms.NumberInput(attrs={'step': '0.0000001', 'class': 'form-control'}),
-            'trail_number': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-        labels = {
-            'trail_number': 'رقم المسار',
-            'name': 'اسم المسار',
-            'location': 'المكان',
-            'date': 'التاريخ',
-            'distance': 'المسافة (كم)',
-            'level': 'المستوى',
-            'meeting_time': 'وقت التجمع',
-            'departure_time': 'وقت الانطلاق',
-            'duration_hours': 'الوقت المستغرق (ساعات)',
-            'audience': 'الفئة المستهدفة',
-            'min_age': 'السن الأدنى',
-            'meeting_location': 'موقع التجمع',
-            'google_maps_url': 'رابط خرائط جوجل',
-            'latitude': 'خط العرض',
-            'longitude': 'خط الطول',
-            'status': 'حالة المسار',
         }
 
 class ParticipantForm(forms.ModelForm):
