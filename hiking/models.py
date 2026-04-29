@@ -21,7 +21,7 @@ class Trail(models.Model):
         ('inactive', '🔴 غير نشط - التسجيل مغلق'),
     ]
 
-    trail_number = models.CharField('رقم المسار', max_length=20, unique=True)
+    trail_number = models.CharField('رقم المسار', max_length=20, unique=True, blank=True)
     name = models.CharField('اسم المسار', max_length=200)
     location = models.CharField('المكان', max_length=300)
     date = models.DateField('التاريخ')
@@ -45,6 +45,22 @@ class Trail(models.Model):
         verbose_name = 'مسار'
         verbose_name_plural = 'المسارات'
 
+    def save(self, *args, **kwargs):
+        """توليد رقم المسار تلقائياً إذا لم يكن موجوداً"""
+        if not self.trail_number:
+            last_trail = Trail.objects.all().order_by('-trail_number').first()
+            if last_trail and last_trail.trail_number:
+                # استخراج الرقم من آخر مسار (متوقع أن يكون الرقم مثل TR001 أو 001)
+                try:
+                    last_number = int(''.join(filter(str.isdigit, last_trail.trail_number)))
+                    new_number = last_number + 1
+                    self.trail_number = f"TR{new_number:03d}"  # تنسيق مثل TR001, TR002
+                except ValueError:
+                    self.trail_number = "TR001"
+            else:
+                self.trail_number = "TR001"
+        super().save(*args, **kwargs)
+    
     def __str__(self):
         return f"{self.trail_number} - {self.name} ({self.date})"
     
