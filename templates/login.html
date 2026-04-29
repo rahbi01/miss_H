@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}دخول لوحة الإدارة{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-header bg-dark text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-lock"></i> لوحة الإدارة
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">اسم المستخدم</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" name="username" id="username" class="form-control" required autofocus>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">كلمة المرور</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> دخول
+                        </button>
+                        <a href="{% url 'index' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> العودة للرئيسية
+                        </a>
+                    </div>
+                </form>
+                
+                <hr>
+                
+                <div class="alert alert-info small text-center">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>تنبيه:</strong> هذه الصفحة مخصصة للإدارة فقط
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body text-center">
+                <i class="fas fa-hiking fa-2x text-success"></i>
+                <p class="mt-2">للاستفسارات: تواصل مع فريق الدعم</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
