@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}إدارة المستخدمين{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="fas fa-user-plus"></i> إضافة مستخدم جديد</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">اسم المستخدم</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">كلمة المرور</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الدور</label>
+                        <select name="role" class="form-select" required>
+                            <option value="user">مستخدم (إدارة المشاركين فقط)</option>
+                            <option value="admin">مدير (صلاحية كاملة)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save"></i> إضافة المستخدم
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="fas fa-users"></i> المستخدمين الحاليين</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>اسم المستخدم</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الدور</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email|default:"-" }}</td>
+                                <td>
+                                    <span class="badge {% if user.profile.role == 'admin' %}bg-danger{% else %}bg-info{% endif %}">
+                                        {{ user.profile.get_role_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'user_toggle_role' user.id %}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-exchange-alt"></i> تغيير الدور
+                                    </a>
+                                    <a href="{% url 'user_delete' user.id %}" class="btn btn-sm btn-danger" onclick="return confirm('حذف المستخدم {{ user.username }}؟')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">لا يوجد مستخدمين</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
