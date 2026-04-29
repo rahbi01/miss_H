@@ -6,8 +6,16 @@
 <div class="row">
     <div class="col-lg-8">
         <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h3 class="mb-0">{{ trail.name }} <small class="text-white-50">{{ trail.trail_number }}</small></h3>
+            <div class="card-header {% if trail.status == 'active' %}bg-primary{% else %}bg-secondary{% endif %} text-white">
+                <h3 class="mb-0">
+                    {{ trail.name }} 
+                    <small class="text-white-50">{{ trail.trail_number }}</small>
+                    {% if trail.status == 'inactive' %}
+                    <span class="badge bg-danger float-left">مغلق - غير متاح للتسجيل</span>
+                    {% else %}
+                    <span class="badge bg-success float-left">متاح للتسجيل</span>
+                    {% endif %}
+                </h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -94,20 +102,30 @@
     
     <div class="col-lg-4">
         <div class="card">
-            <div class="card-header bg-warning">
+            <div class="card-header {% if can_register %}bg-warning{% else %}bg-danger{% endif %} text-white">
                 <h4><i class="fas fa-clipboard-list"></i> التسجيل</h4>
             </div>
             <div class="card-body">
                 {% if can_register %}
-                <p class="text-success">
-                    <i class="fas fa-check-circle"></i> التسجيل مفتوح لهذا المسار
-                </p>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> 
+                    <strong>التسجيل مفتوح</strong><br>
+                    يمكنك التسجيل في هذا المسار الآن
+                </div>
                 <a href="{% url 'public_register' trail.id %}" class="btn btn-success btn-lg w-100">
                     <i class="fas fa-pen-alt"></i> سجل الآن
                 </a>
                 {% else %}
-                <p class="text-danger">
-                    <i class="fas fa-ban"></i> عذراً، التسجيل مغلق لهذا المسار
+                <div class="alert alert-danger">
+                    <i class="fas fa-ban"></i> 
+                    <strong>التسجيل مغلق</strong><br>
+                    هذا المسار غير متاح للتسجيل حالياً
+                </div>
+                <button class="btn btn-secondary btn-lg w-100" disabled>
+                    <i class="fas fa-lock"></i> غير متاح للتسجيل
+                </button>
+                <p class="text-muted small mt-2">
+                    * يمكنك فقط الاطلاع على تفاصيل المسار
                 </p>
                 {% endif %}
             </div>
