@@ -33,7 +33,7 @@ ROOT_URLCONF = 'hiking_tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # هذا السطر مهم جداً
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
